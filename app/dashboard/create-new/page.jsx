@@ -83,7 +83,7 @@ function CreateNew() {
 
   const SaveRawImageToFirebase = async () => {
     const fileName = Date.now() + '_raw.png';
-    const imageRef = ref(storage, 'interior-redesign/' + fileName)
+    const imageRef = ref(storage, 'room-interior-design/' + fileName)
     await uploadBytes(imageRef, formData.image).then(resp => {
       console.log('File uploaded...')
     })
