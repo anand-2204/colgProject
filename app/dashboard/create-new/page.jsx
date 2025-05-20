@@ -52,34 +52,38 @@ function CreateNew() {
       alert('You do not have enough credits! Please purchase more.');
       return;
     }
+  
     setLoading(true);
     try {
       const rawImageUrl = await SaveRawImageToFirebase();
-      const result = await axios.post('/api/interior-redesign', {
+  
+      const payload = {
         imageUrl: rawImageUrl,
-        type: formData?.type,
-        lifestyle: formData?.lifestyle,
-        style: formData?.style,
-        lighting: formData?.lighting,
-        storages: formData?.storages,
-        furniture: formData?.furniture,
-        mood: formData?.mood,
-        smart: formData?.smart,
-        sustainability: formData?.sustainability,
-        rental: formData?.rental,
-        budget: formData?.budget,
-        additional: formData?.additional,
-        userEmail: user?.primaryEmailAddress?.emailAddress
-      });
-      console.log(result.data);
-      await updateUserCredits();
-      setAiOutputImage(result.data.result);
-      setOpenOutputDialog(true);
-      setLoading(false);
+        type: formData?.type || '',
+        lifestyle: formData?.lifestyle || '',
+        style: formData?.style || '',
+        lighting: formData?.lighting || '',
+        storages: formData?.storages || '',
+        furniture: formData?.furniture || '',
+        mood: formData?.mood || '',
+        smart: formData?.smart || '',
+        sustainability: formData?.sustainability || '',
+        rental: formData?.rental || '',
+        budget: formData?.budget || '',
+        additional: formData?.additional || '',
+        userEmail: user?.primaryEmailAddress?.emailAddress || ''
+      };
+  
+      const result = await axios.post('/api/interior-redesign', payload);
+      // handle result
+    } catch (err) {
+      console.error('Error during image generation:', err.response?.data || err.message);
+      alert('Failed to generate image. Check console for details.');
     } finally {
       setLoading(false);
     }
-  }
+  };
+  
 
   const SaveRawImageToFirebase = async () => {
     const fileName = Date.now() + '_raw.png';

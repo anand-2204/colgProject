@@ -10,42 +10,38 @@ import {OpenAI} from 'openai';
 
 
 
-const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_API_TOKEN });
+// const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_API_TOKEN });
 
 
-// const replicate = new Replicate({
-//     auth: process.env.NEXT_PUBLIC_REPLICATE_API_TOKEN
-// });
+const replicate = new Replicate({
+    auth: process.env.NEXT_PUBLIC_REPLICATE_API_TOKEN
+});
 export async function POST(req) {
     //const {user} = useUser();
     const {imageUrl, type, lifestyle, style, lighting, storages, furniture, mood, smart, sustainability, rental, budget, additional, userEmail} = await req.json();
     
     try{
-        const prompt = {
+        const input = {
             image: imageUrl,
-            prompt1: 'A '+type+' with a '+style+' space and a '+mood+' ambiance and aligns with a '+lifestyle+' lifestyle, incorporating '+(smart ? "smart home technology" : "traditional")+' elements and focuses on '+lighting+' lighting and optimize storage with '+storages+' solutions and focuses on '+furniture+' furniture while considering '+(sustainability ? "eco-friendly materials" : "standard materials")+' and is '+(rental ? "renter-friendly" : "customized for ownership")+' and fits within a '+budget+' budget and with additional requirements of '+additional,
+            prompt: 'A '+type+' with a '+style+' space and a '+mood+' ambiance and aligns with a '+lifestyle+' lifestyle, incorporating '+(smart ? "smart home technology" : "traditional")+' elements and focuses on '+lighting+' lighting and optimize storage with '+storages+' solutions and focuses on '+furniture+' furniture while considering '+(sustainability ? "eco-friendly materials" : "standard materials")+' and is '+(rental ? "renter-friendly" : "customized for ownership")+' and fits within a '+budget+' budget and with additional requirements of '+additional,
         };
         
-        const response = await openai.images.generate({
-            prompt,
-            n: 1,
-            
-          });
-      
-          const output = response.data[0].url;
-
-        //   res.json({
-        //     area,
+        // const response = await openai.images.generate({
         //     prompt,
-        //     image_url: imageUrl
+        //     n: 1,
+            
         //   });
       
+        //   const output = response.data[0].url;
+
+        //   res.json(output);
+      
 
 
 
 
 
-        // const output = await replicate.run("adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38", { input });
+        const output = await replicate.run("adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38", { input });
         
         //await writeFile("output.png", output);
         //return NextResponse.json({result:output})

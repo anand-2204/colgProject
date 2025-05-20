@@ -9,7 +9,7 @@ export async function POST(req) {
         //If User Already Exist?
         const userInfo = await db.select().from(Users)
             .where(eq(Users.email, user?.primaryEmailAddress.emailAddress))
-        console.log("User", userInfo);
+        
 
         //If Not Will Add New User to DB
         if (userInfo?.length == 0) {
