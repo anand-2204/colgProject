@@ -19,7 +19,7 @@ function Listing() {
   const GetUserInteriorList = async() => {
     const result = await db.select().from(AiGeneratedImage).where(eq(AiGeneratedImage.userEmail,user?.primaryEmailAddress?.emailAddress));
     setUserInteriorList(result);
-    console.log(result);
+    
   }
   return (
     <div>
