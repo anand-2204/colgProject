@@ -13,7 +13,7 @@ function Header() {
             {/* Logo and Title */}
             <Link href={'/'} className='flex gap-2 items-center flex-shrink-0'>
                 <Image src={'/logo.png'} width={40} height={40} alt="Logo" />
-                <h2 className='font-bold text-lg'>MyInteriorBudAI</h2>
+                <h2 className='font-bold text-lg'>InteriorDesigner</h2>
             </Link>
 
             <Link href={'/dashboard/buy-credits'} className='hidden md:flex mx-auto'>

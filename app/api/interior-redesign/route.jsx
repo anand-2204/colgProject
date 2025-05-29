@@ -18,7 +18,7 @@ export async function POST(req) {
 
     // Destructuring with a fallback to prevent errors
     const {
-      imageUrl = "",
+      imageUrl ,
       type,
       lifestyle,
       style,
@@ -53,43 +53,40 @@ export async function POST(req) {
       { input }
     );
 
-    console.log("Generated Output:", output);
+    console.log("output==",output);
+    
 
     const base64Image = await ConvertImageToBase64(output);
     const fileName = Date.now() + ".png";
-    const storageRef = ref(storage, "interior-redesign/" + fileName);
+    const storageRef = ref(storage, 'room-interior-design/'+ fileName);
     await uploadString(storageRef, base64Image, "data_url");
     const downloadUrl = await getDownloadURL(storageRef);
 
-    console.log("Download URL:", downloadUrl);
-
-    const dbResult = await db
-      .insert(AiGeneratedImage)
-      .values({
-        type,
-        style,
-        lighting,
-        storages,
-        furniture,
-        mood,
-        smart,
-        sustainability,
-        rental,
-        budget,
-        additional,
-        orgImage: imageUrl,
-        aiImage: downloadUrl,
-        userEmail,
-      })
-      .returning({ id: AiGeneratedImage.id });
-
-    console.log("Database Result:", dbResult);
-
-    return NextResponse.json({ result: downloadUrl });
-  } catch (e) {
-    console.error("Error:", e);
-    return NextResponse.json({ error: e.message });
-  }
+    
+    
+    const dbResult = await db.insert(AiGeneratedImage).values({
+      type: type,
+      style: style,
+      lighting: lighting,
+      storages: storages,
+      furniture: furniture,
+      mood: mood,
+      smart: smart,
+      sustainability: sustainability,
+      rental: rental,
+      budget: budget,
+      additional: additional,
+      orgImage: imageUrl,
+      aiImage: downloadUrl,
+      userEmail: userEmail,
+    }).returning({id: AiGeneratedImage.id});
+    
+    console.log("downloadurl=====",downloadUrl)
+   console.log(dbResult)
+        return NextResponse.json({'result':downloadUrl});
+    } catch(e){
+        return NextResponse.json({error:e})
+    }
 }
 
 async function ConvertImageToBase64(imageUrl) {
